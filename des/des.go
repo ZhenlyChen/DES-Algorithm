@@ -1,9 +1,20 @@
 package des
 
-func Encrypt(plain string) string {
+func Encrypt(plain, key string) string {
+	if len(key) != 8 {
+		return ""
+	}
+	// 补全
+	raw := completion([]byte(plain))
+	// IP变换
+	raw = ipTransform(raw)
 	return ""
 }
 
-func Decrypt(cipher string) string {
+func Decrypt(cipher, key string) string {
+	if len(key) != 8 {
+		return ""
+	}
+
 	return ""
 }
