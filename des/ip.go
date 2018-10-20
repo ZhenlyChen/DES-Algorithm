@@ -1,64 +1,35 @@
 package des
 
-import "fmt"
-
-var ipTable []byte
-var ipInvTable []byte
-
+// ipTransform 8 to 8 Test OK!
 func ipTransform(raw []byte) []byte {
-	if len(raw)%8 != 0 {
-		panic("Error length")
-	} else if len(ipTable) == 0 {
-		makeIpTable()
-	}
-	fmt.Println(raw)
-	times := len(raw) / 8
-	res := make([]byte, len(raw))
+	res := make([]byte, 8)
 	table := []uint8{2, 4, 6, 8, 1, 3, 5, 7}
-	for i := 0; i < times; i++ {
-		current := raw[i*8 : (i+1)*8]
-		for j := 0; j < 8; j++ {
-			var b byte = 0
-			for k := 0; k < 8; k++ {
-				b |= current[7-k] & (1 << (8 - table[j])) & (1 << uint8(7 - k))
-				fmt.Println(b, current[7-k], 1 << (8 - table[j]))
+	for j := 0; j < 8; j++ {
+		var b byte = 0
+		for k := 0; k < 8; k++ {
+			b = b << 1
+			if raw[7-k]&(1<<(8-table[j])) != 0 {
+				b |= 1
 			}
-			res[i * 8 + j] = b
 		}
+		res[j] = b
 	}
-	fmt.Println(res)
 	return res
 }
 
+// ipInverseTransform 8 to 8
 func ipInverseTransform(raw []byte) []byte {
-	if len(ipInvTable) == 0 {
-		makeIpInvTable()
+	res := make([]byte, 8)
+	table := []uint8{5, 1, 6, 2, 7, 3, 8, 4}
+	for j := 0; j < 8; j++ {
+		var b byte = 0
+		for k := 0; k < 8; k++ {
+			b = b << 1
+			if raw[table[k]-1]&(1<<uint8(j)) != 0 {
+				b |= 1
+			}
+		}
+		res[j] = b
 	}
-	return raw
-}
-
-func makeIpTable() {
-	for i := 0; i <= 64; i++ {
-		ipTable = append(ipTable, byte(getIpPos(i)))
-	}
-}
-
-func getIpPos(pos int) int {
-	add := pos / 33
-	if pos > 32 {
-		pos -= 32
-	}
-	pos--
-	return 58 - 8*(pos%8) + (pos/8)*2 - add
-}
-
-func makeIpInvTable() {
-	for i := 0; i <= 64; i++ {
-		ipInvTable = append(ipInvTable, byte(getIpInvPos(i)))
-	}
-}
-
-func getIpInvPos(x int) int {
-	x--
-	return 40 + 8*((x%8)/2) - x/8 - 32*(x%2)
+	return res
 }

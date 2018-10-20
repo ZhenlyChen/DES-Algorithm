@@ -5,11 +5,11 @@ import (
 )
 
 func TestDes_1(t *testing.T) {
-	key := "megashow"
+	key := "wohsagem"
 	plain := "Hello, world!"
 	cipher := Encrypt(plain, key)
 	mPlain := Decrypt(cipher, key)
-	t.Log("plain: "+plain)
+	t.Log("plain: "+ plain)
 	t.Log("cipher: "+ cipher)
 	if mPlain != plain {
 		t.Error(mPlain)
