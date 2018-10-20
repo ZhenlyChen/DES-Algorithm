@@ -1,6 +1,5 @@
 package des
 
-
 // to64 raw: [0-7]8 to [1-64]64
 func to64(raw []byte) []byte {
 	res := make([]byte, 65)
@@ -21,7 +20,7 @@ func to8(raw []byte) []byte {
 		var b byte
 		for j := 1; j <= 8; j++ {
 			b <<= 1
-			if raw[(i - 1) * 8 + j] == 1 {
+			if raw[(i-1)*8+j] == 1 {
 				b |= 1
 			}
 		}

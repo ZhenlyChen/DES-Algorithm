@@ -52,7 +52,7 @@ var sBox = [][][]byte{
 	},
 }
 
-var pTable = []byte{0, 16,7,20,21,29,12,28,17,1,15,23,26,5,18,31,10,2,8,24,14,32,27,3,9,19,13,30,6,22,11,4,25}
+var pTable = []byte{0, 16, 7, 20, 21, 29, 12, 28, 17, 1, 15, 23, 26, 5, 18, 31, 10, 2, 8, 24, 14, 32, 27, 3, 9, 19, 13, 30, 6, 22, 11, 4, 25}
 
 // feistel 轮函数 r:32, k:48
 func feistel(r []byte, k []byte) []byte {
@@ -65,7 +65,7 @@ func feistel(r []byte, k []byte) []byte {
 	// s-Box Test OK
 	var res = []byte{0}
 	for i := 1; i <= 8; i++ {
-		res = append(res, sBoxTransform(r[6 * (i - 1) + 1:6 * i + 1], i)...)
+		res = append(res, sBoxTransform(r[6*(i-1)+1:6*i+1], i)...)
 	}
 	// P-置换 Test OK
 	return pTransform(res)
@@ -95,12 +95,12 @@ func eExtension(raw []byte) []byte {
 
 // sBoxTransform 6 to 4
 func sBoxTransform(raw []byte, i int) []byte {
-	n := raw[0] * 2 + raw[5]
-	m := raw[1] * 8 + raw[2] * 4 + raw[3] * 2 + raw[4]
+	n := raw[0]*2 + raw[5]
+	m := raw[1]*8 + raw[2]*4 + raw[3]*2 + raw[4]
 	s := sBox[i][n][m]
 	res := make([]byte, 4)
 	for i := 0; i < 4; i++ {
-		res[3 - i] = byte(s % 2)
+		res[3-i] = byte(s % 2)
 		s >>= 1
 	}
 	return res

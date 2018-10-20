@@ -14,8 +14,9 @@ func Decrypt(cipher, key string) string {
 		panic("Error cipher")
 	}
 	plain := myDES(cipherByte, []byte(key), false)
+	// 删除PKCS5填充
 	length := len(plain)
-	return string(plain[:length - int(plain[length - 1])])
+	return string(plain[:length-int(plain[length-1])])
 }
 
 func myDES(raw, key []byte, isEncrypt bool) []byte {
@@ -31,16 +32,13 @@ func myDES(raw, key []byte, isEncrypt bool) []byte {
 	}
 	times := len(raw) / 8
 	for i := 0; i < times; i++ {
-		cRaw := raw[i*8 : i*8+8]
 		// IP变换 Test OK
-		cRaw = ipTransform(cRaw)
-		cRaw = to64(cRaw)
+		raw := ipTransform(raw[i*8 : i*8+8])
 		// T-迭代 && 交换置换W Test OK
-		cRaw = tIteration(cRaw, keys, !isEncrypt)
-		cRaw = to8(cRaw)
+		raw = to8(tIteration(to64(raw), keys, !isEncrypt))
 		// IP逆置换 Test OK
-		cRaw = ipInverseTransform(cRaw)
-		res = append(res, cRaw...)
+		raw = ipInverseTransform(raw)
+		res = append(res, raw...)
 	}
 	return res
 }
