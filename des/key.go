@@ -28,14 +28,14 @@ func makeKey(key []byte) [][]byte {
 	var subKeys [][]byte
 	// 第一个为空
 	subKeys = append(subKeys, make([]byte, 1))
-	cd := pcTransform(to64(key), pc1Table)
+	cd := pcTransform(to64(key), pc1Table, 56)
 	for i := 1; i <= 16; i++ {
 		if i != 1 && i != 2 && i != 9 && i != 16 {
 			cd = leftShift(cd)
 		}
 		// 循环左移两次
 		cd = leftShift(cd)
-		subKeys = append(subKeys, pcTransform(cd, pc2Table))
+		subKeys = append(subKeys, pcTransform(cd, pc2Table, 48)[:49])
 	}
 	return subKeys
 }
@@ -53,9 +53,9 @@ func leftShift(raw []byte) []byte {
 	return raw
 }
 
-func pcTransform(bit, table []byte) []byte {
-	key := make([]byte, 57)
-	for i := 1; i <= 48; i++ {
+func pcTransform(bit, table []byte, size int) []byte {
+	key := make([]byte, size + 1)
+	for i := 1; i <= size; i++ {
 		key[i] = bit[table[i]]
 	}
 	return key

@@ -94,10 +94,10 @@ func eExtension(raw []byte) []byte {
 }
 
 // sBoxTransform 6 to 4
-func sBoxTransform(raw []byte, i int) []byte {
+func sBoxTransform(raw []byte, index int) []byte {
 	n := raw[0]*2 + raw[5]
 	m := raw[1]*8 + raw[2]*4 + raw[3]*2 + raw[4]
-	s := sBox[i][n][m]
+	s := sBox[index][n][m]
 	res := make([]byte, 4)
 	for i := 0; i < 4; i++ {
 		res[3-i] = byte(s % 2)
