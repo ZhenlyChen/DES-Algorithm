@@ -2,7 +2,8 @@ package main
 
 import (
 	"fmt"
-	"github.com/ZhenlyChen/goDES/des"
+
+	"github.com/ZhenlyChen/DES-Golang/des"
 )
 
 func main() {
