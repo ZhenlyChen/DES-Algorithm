@@ -1,3 +1,3 @@
-# DES-Golang
+# DES-Algorithm
 
-A DES Algorithm implement by golang
+DES Algorithm implement by golang and c
